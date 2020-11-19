@@ -14,7 +14,7 @@ Station=Base.classes.station
 app = Flask(__name__)
 
 @app.route("/")
-def Home page():
+def Home_page():
     """List all available api routes."""
     return (
         f"Available Routes:<br/>"
@@ -36,7 +36,7 @@ def precipitation():
     session.close()
 
     # Create a dictionary from the row data and append to a list of all_passengers
-   date_precip= []
+    date_precip= []
     for date, prcp in precip_list:
         date_precip_dict = {}
         date_dict["date"] = date
@@ -52,18 +52,22 @@ def stations():
 
     """Return a list of stations from the dataset"""
     stations_list = session.query(Measurement.station, func.count(Measurement.station)).\
-group_by(Measurement.station).order_by(func.count(Measurement.station).desc()).all()
+    group_by(Measurement.station).order_by(func.count(Measurement.station).desc()).all()
     session.close()
     # convert a tuple list into a normal list
     stations_lst= list(np.ravel(stations_list))
     return jsonify(stations_lst)
 
 @app.route("/api/v1.0/tobs")
-def tobs(:
-    session =Session(engine)
+def tobs():
+    session = Session(engine)
     """Return the dates and temperature observations of the most active station for the last year of data"""
 
     temp_list=session.query(Measurement.tobs).filter(Measurement.station=='USC00519281').filter(Measurement.date>=one_year_ago).all()
     session.close()
+
+    temp_lst= list(np.ravel(temp_list))
+    return jsonify(temp_lst)
+
 if __name__ == '__main__':
     app.run(debug=True)
