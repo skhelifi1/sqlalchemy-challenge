@@ -3,6 +3,7 @@ import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, inspect, func
+import datetime as dt
 
 from flask import Flask, jsonify
 
@@ -11,6 +12,7 @@ Base=automap_base()
 Base.prepare(engine, reflect=True)
 Measurement= Base.classes.measurement
 Station=Base.classes.station
+one_year_ago = dt.date(2017, 8, 23) - dt.timedelta(days=365)
 app = Flask(__name__)
 
 @app.route("/")
@@ -18,9 +20,9 @@ def Home_page():
     """List all available api routes."""
     return (
         f"Available Routes:<br/>"
-        f"/api/v1.0/precipitation"
-        f"/api/v1.0/stations"
-        f"/api/v1.0/tobs"
+        f"/api/v1.0/precipitation<br/>"
+        f"/api/v1.0/stations<br/>"
+        f"/api/v1.0/tobs<br/>"
         )
 
 
@@ -39,8 +41,8 @@ def precipitation():
     date_precip= []
     for date, prcp in precip_list:
         date_precip_dict = {}
-        date_dict["date"] = date
-        precip_dict["prcp"] = prcp
+        date_precip_dict["date"] = date
+        date_precip_dict["prcp"] = prcp
         date_precip.append(date_precip_dict)
 
     return jsonify(date_precip)
