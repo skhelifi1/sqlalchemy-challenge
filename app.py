@@ -18,13 +18,13 @@ def Home_page():
     """List all available api routes."""
     return (
         f"Available Routes:<br/>"
-        f"/api/v1.0/precipitation>"
+        f"/api/v1.0/precipitation"
         f"/api/v1.0/stations"
         f"/api/v1.0/tobs"
         )
 
 
-@app.route("/api/v1.0/precipitation>")
+@app.route("/api/v1.0/precipitation")
 def precipitation():
     # Create our session (link) from Python to the DB
     session = Session(engine)
